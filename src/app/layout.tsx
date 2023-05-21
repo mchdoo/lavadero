@@ -1,7 +1,7 @@
 import React from "react";
-import Sidebar from "./sidebar";
 import "@/styles.css";
 import { Inter } from "next/font/google";
+import Sidebar from "./sidebar";
 
 const inter = Inter({
   weight: "variable",
@@ -19,10 +19,10 @@ export default function RootLayout({
       <head>
         <title>Lavadero</title>
       </head>
-      <body style={inter.style} className="inline-flex h-screen">
+      <body style={inter.style} className="inline-flex w-full h-screen">
         <Sidebar />
 
-        <main className="p-6">{children}</main>
+        <main className="px-8 py-4 w-full">{children}</main>
       </body>
     </html>
   );

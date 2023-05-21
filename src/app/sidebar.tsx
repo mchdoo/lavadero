@@ -1,45 +1,74 @@
 "use client";
 
-import { Tab } from "@headlessui/react";
+import { Tab, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import React from "react";
+import React, { useState } from "react";
+import { RxChevronLeft, RxPerson, RxViewGrid } from "react-icons/rx";
 
 function Sidebar() {
+  const [minimized, setMinimized] = useState(false);
   const pathname = usePathname();
   const links = [
     {
       title: "Ventas",
       href: "/",
+      icon: <RxViewGrid />,
     },
     {
       title: "Proveedores",
       href: "/proveedores",
+      icon: <RxPerson />,
     },
   ];
 
   return (
-    <nav className="h-full bg-slate-100 relative p-3 w-60">
-      <h3 className="font-bold text-sm text-slate-400 uppercase mb-3">
-        Lavadero
-      </h3>
-      <div className="text-sm text-slate-500 flex flex-col gap-1">
+    <nav className={`bg-slate-100 p-3 ${!minimized &&  '-mr-20 md:mr-0 z-10'}`}>
+      <button
+        onClick={() => setMinimized((prev) => !prev)}
+        className="p-1.5 w-full flex justify-end
+      "
+      >
+        <RxChevronLeft
+          className={`text-xl text-slate-400 cursor-pointer transition duration-200 ${
+            minimized && "rotate-180"
+          }`}
+        />
+      </button>
+      <ul
+        className={` rounded-md transition-all ${!minimized && "pr-12 md:pr-16"}`}
+      >
         {links.map((link, index) => {
           const isActive = pathname === link.href;
           return (
-            <Link
-            key={index}
+            <li
               className={`p-2 rounded ${
-                isActive ? "bg-slate-200 text-slate-500" : "hover:bg-slate-200 text-slate-400"
+                isActive ? "text-emerald-600 font-medium" : "text-slate-400"
               }`}
-              href={link.href}
             >
-              {link.title}
-            </Link>
+              <Link
+                key={index}
+                href={link.href}
+                className={`flex items-center  gap-3 leading-none`}
+              >
+                {link.icon}
+                <Transition
+                  show={!minimized}
+                  enter="transition-all"
+                  enterFrom="opacity-0 -translate-x-2"
+                  enterTo="opacity-100 translate-x-0"
+                  leave="transition-all duration-0"
+                  leaveFrom="opacity-100 translate-x-0"
+                  leaveTo="opacity-0 -translate-x-2"
+                >
+                  {link.title}
+                </Transition>
+              </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </nav>
   );
 }

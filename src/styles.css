@@ -5,3 +5,11 @@
 :root {
     font-family: var(--inter-font);
 }
+
+.button {
+    @apply bg-emerald-800 text-emerald-100 p-2 px-3 rounded-full hover:bg-emerald-700 active:scale-90 transition;
+
+    &.icon {
+        @apply  inline-flex items-center gap-2;
+    }
+}
